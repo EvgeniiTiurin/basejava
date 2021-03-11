@@ -6,68 +6,58 @@ import java.util.Arrays;
 
 public class ArrayStorage {
     Resume[] storage = new Resume[5];
-    int index = 0;
+    int resumeCounter = 0;
 
     void clear() {
-        Arrays.fill(storage, null);
-        index = 0;
+        Arrays.fill(storage, 0, resumeCounter, null);
+        resumeCounter = 0;
     }
 
     void save(Resume r) {
         if (r.uuid != null) {
-            storage[index] = r;
-            index++;
+            storage[resumeCounter] = r;
+            resumeCounter++;
         }
     }
 
     Resume get(String uuid) {
-        for (Resume r : storage) {
-            if (r.uuid == uuid) {
-                return r;
+        Resume resume = new Resume();
+        resume.uuid = null;
+        try {
+            for (Resume r : storage) {
+                if (r.uuid == uuid) {
+                    return r;
+                }
             }
+        } catch (NullPointerException ex) {
+            System.out.println("Резюме не найдено");
         }
-        System.out.println("Не найдено");
-        return null;
+        return resume;
     }
 
     void delete(String uuid) {
-        for (Resume r : storage) {
-            if (r.uuid == uuid) {
-                System.arraycopy(storage, Arrays.asList(storage).indexOf(r) + 1, storage, Arrays.asList(storage).indexOf(r), storage.length - 1 - Arrays.asList(storage).indexOf(r));
+        try {
+            for (Resume r : storage) {
+                if (r.uuid == uuid) {
+                    System.arraycopy(storage, Arrays.asList(storage).indexOf(r) + 1, storage, Arrays.asList(storage).indexOf(r), storage.length - 1 - Arrays.asList(storage).indexOf(r));
+                    resumeCounter--;
+                } else {
+                    System.out.println("Резюме для удаления не найдено");
+                }
             }
-        }
+        } catch (Exception ex) { }
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        int count = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) ;
-            count++;
-        }
-
-        Resume[] temp = new Resume[5]; //storage.length - count];
-        int j = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                temp[j] = storage[i];
-                j++;
-            }
-        }
-        storage = temp;
-        return storage;
-        //return new Resume[0];
+        Resume[] allResume = new Resume[resumeCounter];
+        System.arraycopy(storage, 0, allResume, 0, resumeCounter);
+        return allResume;
     }
 
     int size() {
-        int count = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-            count++;
-            }
-        }
-        return count;
+        return resumeCounter;
     }
 }
