@@ -39,7 +39,8 @@ public class ArrayStorage {
         try {
             for (Resume r : storage) {
                 if (r.uuid == uuid) {
-                    System.arraycopy(storage, Arrays.asList(storage).indexOf(r) + 1, storage, Arrays.asList(storage).indexOf(r), storage.length - 1 - Arrays.asList(storage).indexOf(r));
+                    int numberOfElement = Arrays.asList(storage).indexOf(r);
+                    System.arraycopy(storage, Arrays.asList(storage).indexOf(r) + 1, storage, numberOfElement, storage.length - 1 - numberOfElement);
                     resumeCounter--;
                 } else {
                     System.out.println("Резюме для удаления не найдено");
