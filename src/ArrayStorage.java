@@ -5,7 +5,7 @@ import java.util.Arrays;
  */
 
 public class ArrayStorage {
-    Resume[] storage = new Resume[5];
+    Resume[] storage = new Resume[10000];
     int resumeCounter = 0;
 
     void clear() {
@@ -21,32 +21,27 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        Resume resume = new Resume();
-        resume.uuid = null;
-        try {
-            for (Resume r : storage) {
-                if (r.uuid == uuid) {
-                    return r;
-                }
+        for (int i = 0; i < resumeCounter; i++) {
+            if (storage[i].uuid == uuid) {
+                return storage[i];
             }
-        } catch (NullPointerException ex) {
-            System.out.println("Резюме не найдено");
         }
-        return resume;
+        System.out.print("Резюме не найдено : ");
+        return new Resume();
     }
 
     void delete(String uuid) {
-        try {
-            for (Resume r : storage) {
-                if (r.uuid == uuid) {
-                    int numberOfElement = Arrays.asList(storage).indexOf(r);
-                    System.arraycopy(storage, Arrays.asList(storage).indexOf(r) + 1, storage, numberOfElement, storage.length - 1 - numberOfElement);
-                    resumeCounter--;
-                } else {
-                    System.out.println("Резюме для удаления не найдено");
-                }
+        boolean found = false;
+        for (int i = 0; i < resumeCounter; i++) {
+            if (storage[i].uuid == uuid) {
+                System.arraycopy(storage, i + 1, storage, i, resumeCounter - 1 - i);
+                resumeCounter--;
+                found = true;
             }
-        } catch (Exception ex) { }
+        }
+        if (!found){
+            System.out.println("Резюме для удаления не найдено");
+        }
     }
 
     /**
