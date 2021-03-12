@@ -27,7 +27,7 @@ public class ArrayStorage {
             }
         }
         System.out.print("Резюме не найдено : ");
-        return new Resume();
+        return null;
     }
 
     void delete(String uuid) {
