@@ -39,7 +39,7 @@ public class ArrayStorage {
                 found = true;
             }
         }
-        if (!found){
+        if (!found) {
             System.out.println("Резюме для удаления не найдено");
         }
     }
