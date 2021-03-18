@@ -2,9 +2,6 @@ package storage;
 
 import model.Resume;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
@@ -12,9 +9,28 @@ import java.util.Arrays;
  */
 
 public class ArrayStorage {
-    private int arraySize = 10000;
+    private int arraySize = 10_000;
     private Resume[] storage = new Resume[arraySize];
     private int resumeCounter = 0;
+
+    private Resume findResumeByResume(Resume resume) {
+        for (int i = 0; i < resumeCounter; i++) {
+            if (storage[i].getUuid() == resume.getUuid()) {
+                return storage[i];
+            }
+        }
+        return null;
+    }
+
+    private int findResumeByUuid(String uuid) {
+        for (int i = 0; i < resumeCounter; i++) {
+            if (storage[i].getUuid() == uuid) {
+                return i;
+            }
+        }
+        System.out.print("ERROR: Резюме не найдено\n");
+        return -1;
+    }
 
     public void clear() {
         Arrays.fill(storage, 0, resumeCounter, null);
@@ -22,37 +38,21 @@ public class ArrayStorage {
         System.out.println("Массив успешно очищен");
     }
 
-    public void update(Resume r) throws IOException {
-        for (int i = 0; i < resumeCounter; i++) {
-            if (storage[i].getUuid() == r.getUuid()) {
-                System.out.print("Введите новый uuid резюме: ");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                String str = reader.readLine();
-                String[] params = str.trim().toLowerCase().split(" ");
-                if (str.length() == 0) {
-                    System.out.println("ERROR: Неверная команда.");
-                    return;
-
-                } else {
-                    System.out.println("Резюме успешно изменено");
-                    storage[i].setUuid(params[0].intern());
-                    return;
-                }
-            }
+    public void update(Resume resume) {
+        if (findResumeByResume(resume) != null) {
+            return;
         }
-        System.out.println("ERROR: Неверная команда");
+        System.out.println("ERROR: Резюме для обновления не найдено");
     }
 
-    public void save(Resume r) {
+    public void save(Resume resume) {
         if (resumeCounter < arraySize) {
-            if (r.getUuid() != null) {
-                for (int i = 0; i < resumeCounter; i++) {
-                    if (storage[i].getUuid() == r.getUuid()) {
-                        System.out.println("ERROR: Данное резюме уже внесено в базу");
-                        return;
-                    }
+            if (resume.getUuid() != null) {
+                if (findResumeByResume(resume) != null) {
+                    System.out.println("ERROR: Данное резюме уже внесено в базу");
+                    return;
                 }
-                storage[resumeCounter] = r;
+                storage[resumeCounter] = resume;
                 resumeCounter++;
                 System.out.println("Резюме добавлено в базу");
             } else {
@@ -64,27 +64,22 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < resumeCounter; i++) {
-            if (storage[i].getUuid() == uuid) {
-                return storage[i];
-            }
+        int i = findResumeByUuid(uuid);
+        if (i == -1) {
+            return null;
         }
-        System.out.print("ERROR: Резюме не найдено : ");
-        return null;
+        return storage[i];
     }
 
     public void delete(String uuid) {
-        boolean found = false;
-        for (int i = 0; i < resumeCounter; i++) {
-            if (storage[i].getUuid() == uuid) {
-                System.out.println("Резюме " + storage[i].getUuid() + " успешно удалено из базы");
-                System.arraycopy(storage, i + 1, storage, i, resumeCounter - 1 - i);
-                resumeCounter--;
-                found = true;
-            }
+        int i = findResumeByUuid(uuid);
+        if (i == -1) {
+            return;
         }
-        if (!found) {
-            System.out.println("Резюме для удаления не найдено или резюме не указано");
+        if (storage[i] != null) {
+            System.out.println("Резюме " + storage[i].getUuid() + " успешно удалено из базы");
+            System.arraycopy(storage, i + 1, storage, i, resumeCounter - 1 - i);
+            resumeCounter--;
         }
     }
 
