@@ -13,22 +13,12 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[arraySize];
     private int resumeCounter = 0;
 
-    private Resume findResumeByResume(Resume resume) {
-        for (int i = 0; i < resumeCounter; i++) {
-            if (storage[i].getUuid() == resume.getUuid()) {
-                return storage[i];
-            }
-        }
-        return null;
-    }
-
     private int findResumeByUuid(String uuid) {
         for (int i = 0; i < resumeCounter; i++) {
             if (storage[i].getUuid() == uuid) {
                 return i;
             }
         }
-        System.out.print("ERROR: Резюме не найдено\n");
         return -1;
     }
 
@@ -39,7 +29,9 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        if (findResumeByResume(resume) != null) {
+        int index = findResumeByUuid(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
             return;
         }
         System.out.println("ERROR: Резюме для обновления не найдено");
@@ -48,7 +40,7 @@ public class ArrayStorage {
     public void save(Resume resume) {
         if (resumeCounter < arraySize) {
             if (resume.getUuid() != null) {
-                if (findResumeByResume(resume) != null) {
+                if (findResumeByUuid(resume.getUuid()) >= 0) {
                     System.out.println("ERROR: Данное резюме уже внесено в базу");
                     return;
                 }
@@ -66,19 +58,21 @@ public class ArrayStorage {
     public Resume get(String uuid) {
         int i = findResumeByUuid(uuid);
         if (i == -1) {
+            System.out.println("ERROR: Резюме не найдено");
             return null;
         }
         return storage[i];
     }
 
     public void delete(String uuid) {
-        int i = findResumeByUuid(uuid);
-        if (i == -1) {
+        int index = findResumeByUuid(uuid);
+        if (index == -1) {
+            System.out.println("ERROR: Резюме не найдено");
             return;
         }
-        if (storage[i] != null) {
-            System.out.println("Резюме " + storage[i].getUuid() + " успешно удалено из базы");
-            System.arraycopy(storage, i + 1, storage, i, resumeCounter - 1 - i);
+        if (storage[index] != null) {
+            System.out.println("Резюме " + storage[index].getUuid() + " успешно удалено из базы");
+            System.arraycopy(storage, index + 1, storage, index, resumeCounter - 1 - index);
             resumeCounter--;
         }
     }
