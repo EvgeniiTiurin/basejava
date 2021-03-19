@@ -13,7 +13,7 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[arraySize];
     private int resumeCounter = 0;
 
-    private int findResumeByUuid(String uuid) {
+    private int findResume(String uuid) {
         for (int i = 0; i < resumeCounter; i++) {
             if (storage[i].getUuid() == uuid) {
                 return i;
@@ -29,24 +29,25 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int index = findResumeByUuid(resume.getUuid());
+        int index = findResume(resume.getUuid());
         if (index >= 0) {
             storage[index] = resume;
+            System.out.println("Резюме " + resume + " успешно обновлено");
             return;
         }
-        System.out.println("ERROR: Резюме для обновления не найдено");
+        System.out.println("ERROR: Резюме " + resume.getUuid() + " для обновления не найдено");
     }
 
     public void save(Resume resume) {
         if (resumeCounter < arraySize) {
             if (resume.getUuid() != null) {
-                if (findResumeByUuid(resume.getUuid()) >= 0) {
-                    System.out.println("ERROR: Данное резюме уже внесено в базу");
+                if (findResume(resume.getUuid()) >= 0) {
+                    System.out.println("ERROR: Резюме " + resume + " уже внесено в базу");
                     return;
                 }
                 storage[resumeCounter] = resume;
                 resumeCounter++;
-                System.out.println("Резюме добавлено в базу");
+                System.out.println("Резюме " + resume + " добавлено в базу");
             } else {
                 System.out.println("ERROR: Вы ввели пустое значение");
             }
@@ -56,18 +57,18 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int i = findResumeByUuid(uuid);
-        if (i == -1) {
-            System.out.println("ERROR: Резюме не найдено");
+        int index = findResume(uuid);
+        if (index == -1) {
+            System.out.println("ERROR: Резюме " + uuid + " не найдено");
             return null;
         }
-        return storage[i];
+        return storage[index];
     }
 
     public void delete(String uuid) {
-        int index = findResumeByUuid(uuid);
+        int index = findResume(uuid);
         if (index == -1) {
-            System.out.println("ERROR: Резюме не найдено");
+            System.out.println("ERROR: Резюме " + uuid + " не найдено");
             return;
         }
         if (storage[index] != null) {
