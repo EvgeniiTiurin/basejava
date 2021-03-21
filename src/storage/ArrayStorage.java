@@ -71,9 +71,9 @@ public class ArrayStorage {
             System.out.println("ERROR: Резюме " + uuid + " не найдено");
             return;
         }
-            System.out.println("Резюме " + storage[index].getUuid() + " успешно удалено из базы");
-            System.arraycopy(storage, index + 1, storage, index, resumeCounter - 1 - index);
-            resumeCounter--;
+        System.out.println("Резюме " + storage[index].getUuid() + " успешно удалено из базы");
+        System.arraycopy(storage, index + 1, storage, index, resumeCounter - 1 - index);
+        resumeCounter--;
     }
 
     /**
