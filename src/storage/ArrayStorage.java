@@ -13,7 +13,7 @@ public class ArrayStorage {
     private Resume[] storage = new Resume[arraySize];
     private int resumeCounter = 0;
 
-    private int findResume(String uuid) {
+    private int getIndex(String uuid) {
         for (int i = 0; i < resumeCounter; i++) {
             if (storage[i].getUuid() == uuid) {
                 return i;
@@ -29,7 +29,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int index = findResume(resume.getUuid());
+        int index = getIndex(resume.getUuid());
         if (index >= 0) {
             storage[index] = resume;
             System.out.println("Резюме " + resume + " успешно обновлено");
@@ -41,7 +41,7 @@ public class ArrayStorage {
     public void save(Resume resume) {
         if (resumeCounter < arraySize) {
             if (resume.getUuid() != null) {
-                if (findResume(resume.getUuid()) >= 0) {
+                if (getIndex(resume.getUuid()) >= 0) {
                     System.out.println("ERROR: Резюме " + resume + " уже внесено в базу");
                     return;
                 }
@@ -57,7 +57,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int index = findResume(uuid);
+        int index = getIndex(uuid);
         if (index == -1) {
             System.out.println("ERROR: Резюме " + uuid + " не найдено");
             return null;
@@ -66,7 +66,7 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int index = findResume(uuid);
+        int index = getIndex(uuid);
         if (index == -1) {
             System.out.println("ERROR: Резюме " + uuid + " не найдено");
             return;
@@ -80,9 +80,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] allResume = new Resume[resumeCounter];
-        System.arraycopy(storage, 0, allResume, 0, resumeCounter);
-        return allResume;
+        return Arrays.copyOfRange(storage, 0, resumeCounter);
     }
 
     public int size() {
