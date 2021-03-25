@@ -8,12 +8,9 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 
-public class ArrayStorage implements Storage {
-    private static final int ARRAY_SIZE = 10_000;
-    private Resume[] storage = new Resume[ARRAY_SIZE];
-    private int resumeCounter = 0;
+public class ArrayStorage extends AbstractArrayStorage {
 
-    private int getIndex(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < resumeCounter; i++) {
             if (storage[i].getUuid() == uuid) {
                 return i;
@@ -56,15 +53,6 @@ public class ArrayStorage implements Storage {
         }
     }
 
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index == -1) {
-            System.out.println("ERROR: Резюме " + uuid + " не найдено");
-            return null;
-        }
-        return storage[index];
-    }
-
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
@@ -81,9 +69,5 @@ public class ArrayStorage implements Storage {
      */
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, resumeCounter);
-    }
-
-    public int size() {
-        return resumeCounter;
     }
 }
