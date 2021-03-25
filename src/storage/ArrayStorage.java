@@ -9,8 +9,8 @@ import java.util.Arrays;
  */
 
 public class ArrayStorage {
-    private int arraySize = 10_000;
-    private Resume[] storage = new Resume[arraySize];
+    private static final int ARRAY_SIZE = 10_000;
+    private Resume[] storage = new Resume[ARRAY_SIZE];
     private int resumeCounter = 0;
 
     private int getIndex(String uuid) {
@@ -39,7 +39,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (resumeCounter < arraySize) {
+        if (resumeCounter < ARRAY_SIZE) {
             if (resume.getUuid() != null) {
                 if (getIndex(resume.getUuid()) >= 0) {
                     System.out.println("ERROR: Резюме " + resume + " уже внесено в базу");
