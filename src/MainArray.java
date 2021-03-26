@@ -1,5 +1,4 @@
 import model.Resume;
-import storage.ArrayStorage;
 import storage.SortedArrayStorage;
 import storage.Storage;
 
