@@ -17,7 +17,7 @@ public abstract class AbstractArrayStorage implements Storage {
         return resumeCounter;
     }
 
-    public Resume get(String uuid) {
+    final public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
             System.out.println("ERROR: Резюме " + uuid + " не найдено");
@@ -28,7 +28,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    public void update(Resume resume) {
+    final public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
         if (index >= 0) {
             storage[index] = resume;
@@ -38,25 +38,9 @@ public abstract class AbstractArrayStorage implements Storage {
         System.out.println("ERROR: Резюме " + resume.getUuid() + " для обновления не найдено");
     }
 
-    public void save(Resume resume) {
-        if (resumeCounter < ARRAY_SIZE) {
-            if (resume.getUuid() != null) {
-                if (getIndex(resume.getUuid()) >= 0) {
-                    System.out.println("ERROR: Резюме " + resume + " уже внесено в базу");
-                    return;
-                }
-                storage[resumeCounter] = resume;
-                resumeCounter++;
-                System.out.println("Резюме " + resume + " добавлено в базу");
-            } else {
-                System.out.println("ERROR: Вы ввели пустое значение");
-            }
-        } else {
-            System.out.println("ERROR: Достигнут максимум массива резюме");
-        }
-    }
+    public abstract void save(Resume resume);
 
-    public void delete(String uuid) {
+    final public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
             System.out.println("ERROR: Резюме " + uuid + " не найдено");
