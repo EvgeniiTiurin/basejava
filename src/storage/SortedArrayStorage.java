@@ -20,7 +20,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
                     System.out.println("ERROR: Резюме " + resume + " уже внесено в базу");
                     return;
                 } else if (resumeCounter > 0) {
-                    int index = Arrays.binarySearch(storage, 0, resumeCounter - 1, resume, Comparator.nullsLast((Object o1, Object o2) -> ((Resume) o1).compareTo((Resume) o2)));
+                    int index = Arrays.binarySearch(storage, 0, resumeCounter, resume, Comparator.nullsLast((Object o1, Object o2) -> ((Resume) o1).compareTo((Resume) o2)));
                     if (index < 0) {
                         index = -index - 1;
                     }
