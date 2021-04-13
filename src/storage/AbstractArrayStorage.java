@@ -43,7 +43,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
         if (index >= 0) {
             System.out.println("ERROR: Резюме " + resume + " уже внесено в базу");
-        } else if (resumeCounter == ARRAY_SIZE){
+        } else if (resumeCounter == ARRAY_SIZE) {
             System.out.println("ERROR: Достигнут максимум массива резюме");
         } else {
             saveToArray(resume, index);

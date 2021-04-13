@@ -3,7 +3,6 @@ package storage;
 import model.Resume;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
@@ -15,8 +14,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void saveToArray(Resume resume, int index) {
-            index = -index - 1;
-            System.arraycopy(storage, index, storage, index + 1, resumeCounter - index);
-            storage[index] = resume;
+        index = -index - 1;
+        System.arraycopy(storage, index, storage, index + 1, resumeCounter - index);
+        storage[index] = resume;
     }
 }
