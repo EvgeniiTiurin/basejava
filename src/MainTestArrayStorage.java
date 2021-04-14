@@ -15,9 +15,9 @@ public class MainTestArrayStorage {
         //r2.setUuid("uuid2");
         Resume r3 = new Resume();
         //r3.setUuid("uuid3");
-        r2.setUuid("uuid2");
-        r1.setUuid("uuid1");
-        r3.setUuid("uuid3");
+//        r2.setUuid("uuid2");
+//        r1.setUuid("uuid1");
+//        r3.setUuid("uuid3");
 
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);

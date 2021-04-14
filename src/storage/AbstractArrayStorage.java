@@ -1,5 +1,8 @@
 package storage;
 
+import exception.ExistStorageException;
+import exception.NotExistStorageException;
+import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
@@ -20,8 +23,9 @@ public abstract class AbstractArrayStorage implements Storage {
     final public Resume get(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
-            System.out.println("ERROR: Резюме " + uuid + " не найдено");
-            return null;
+            //System.out.println("ERROR: Резюме " + uuid + " не найдено");
+            throw new NotExistStorageException(uuid);
+            //return null;
         }
         return storage[index];
     }
@@ -35,16 +39,19 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Резюме " + resume + " успешно обновлено");
             return;
         }
-        System.out.println("ERROR: Резюме " + resume.getUuid() + " для обновления не найдено");
+        throw new NotExistStorageException(resume.getUuid());
+        //System.out.println("ERROR: Резюме " + resume.getUuid() + " для обновления не найдено");
     }
 
     public void save(Resume resume) {
         int index = getIndex(resume.getUuid());
 
         if (index >= 0) {
-            System.out.println("ERROR: Резюме " + resume + " уже внесено в базу");
+            //System.out.println("ERROR: Резюме " + resume + " уже внесено в базу");
+            throw new ExistStorageException(resume.getUuid());
         } else if (resumeCounter == ARRAY_SIZE) {
-            System.out.println("ERROR: Достигнут максимум массива резюме");
+            //System.out.println("ERROR: Достигнут максимум массива резюме");
+            throw new StorageException("ERROR: Достигнут максимум массива резюме", resume.getUuid());
         } else {
             saveToArray(resume, index);
             System.out.println("Резюме " + resume + " добавлено в базу");
@@ -57,8 +64,9 @@ public abstract class AbstractArrayStorage implements Storage {
     final public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
-            System.out.println("ERROR: Резюме " + uuid + " не найдено");
-            return;
+            throw new NotExistStorageException(uuid);
+//            System.out.println("ERROR: Резюме " + uuid + " не найдено");
+//            return;
         }
         System.out.println("Резюме " + storage[index].getUuid() + " успешно удалено из базы");
         System.arraycopy(storage, index + 1, storage, index, resumeCounter - 1 - index);
